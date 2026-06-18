@@ -1,0 +1,113 @@
+# ANALYSE DE LA TABLE TB_MENUS
+
+## FICHIERS UTILISANT TB_MENUS
+
+1. **application/models/Archive_model.php**
+   - Méthode `get_menus_by_role($role)` (ligne 26-32)
+   - Exécute la requête: `SELECT * FROM tb_menus WHERE min_role >= $role ORDER BY id_menu ASC`
+
+2. **application/controllers/Archive.php**
+   - Dans le constructeur (ligne 12-16)
+   - Initialise `$this->data['menus']` avec les résultats de `get_menus_by_role()`
+
+3. **application/views/header.php**
+   - Affiche les menus dans la navbar (ligne 33-44)
+   - Utilise la variable `$menus` passée depuis le contrôleur
+
+## RÔLE DE LA TABLE
+
+La table `tb_menus` est utilisée pour gérer la navigation dynamique de l'application en fonction des rôles des utilisateurs. Elle permet de:
+
+1. **Contrôle d'accès basé sur les rôles** :
+   - Chaque menu a un `min_role` qui détermine le niveau minimum requis pour voir ce menu
+   - Les utilisateurs avec un rôle inférieur ne voient pas ces menus
+
+2. **Génération dynamique de la navbar** :
+   - La navbar est générée automatiquement en fonction des menus disponibles pour l'utilisateur
+   - Les menus sont affichés dans l'ordre défini par le champ `ordre`
+
+3. **Centralisation de la gestion des menus** :
+   - Permet de modifier les menus sans toucher au code
+   - Facilite l'ajout/suppression de menus
+
+## STRUCTURE ATTENDUE DE LA TABLE
+
+D'après l'analyse du code, la table `tb_menus` devrait avoir la structure suivante:
+
+| Champ       | Type         | Description                                                                 |
+|-------------|--------------|-----------------------------------------------------------------------------|
+| id_menu     | int(11)      | Clé primaire, auto-incrément                                               |
+| menu        | varchar(100) | Nom du menu (ex: "Accueil", "Pré-archives")                                 |
+| lien        | varchar(255) | URL du menu (ex: "archive", "prearchive")                                   |
+| icone       | varchar(50)  | Classe de l'icône (ex: "fas fa-home")                                      |
+| min_role    | int(11)      | Rôle minimum requis pour voir ce menu (1=admin, 2=gestionnaire, etc.)      |
+| ordre       | int(11)      | Ordre d'affichage dans la navbar                                           |
+
+## SCRIPT SQL DE CORRECTION
+
+Un script SQL a été créé pour résoudre le problème:
+
+```sql
+-- Create tb_menus table
+CREATE TABLE IF NOT EXISTS `tb_menus` (
+  `id_menu` int(11) NOT NULL AUTO_INCREMENT,
+  `menu` varchar(100) NOT NULL,
+  `lien` varchar(255) NOT NULL,
+  `icone` varchar(50) NOT NULL,
+  `min_role` int(11) NOT NULL DEFAULT 1,
+  `ordre` int(11) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id_menu`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Insert default menu items
+INSERT INTO `tb_menus` (`menu`, `lien`, `icone`, `min_role`, `ordre`) VALUES
+('Accueil', 'archive', 'fas fa-home', 1, 1),
+('Pré-archives', 'prearchive', 'fas fa-file-alt', 1, 2),
+('Archives finales', 'archive_final', 'fas fa-archive', 1, 3),
+('Personnel sortant', 'personnel_sortant', 'fas fa-user-friends', 1, 4),
+('Utilisateurs', 'users', 'fas fa-users', 2, 5),
+('Journal d\'activité', 'activity_log', 'fas fa-history', 2, 6),
+('Journal de consultation', 'consultations', 'fas fa-eye', 2, 7),
+('Corbeille', 'trash', 'fas fa-trash', 2, 8);
+```
+
+## RISQUES ÉVENTUELS
+
+1. **Incompatibilité de structure** :
+   - Si la table existe déjà dans une autre base avec une structure différente
+   - Solution: Vérifier la structure existante avant de créer la table
+
+2. **Données existantes** :
+   - Si la table existe déjà avec des données, notre script pourrait dupliquer les entrées
+   - Solution: Utiliser `INSERT IGNORE` ou vérifier l'existence avant insertion
+
+3. **Dépendances** :
+   - D'autres parties du code pourraient dépendre de cette table
+   - Solution: Tester toutes les fonctionnalités après création de la table
+
+## TESTS À EFFECTUER
+
+1. **Exécution du script SQL** :
+   - Vérifier que la table est créée avec succès
+   - Vérifier que les données sont insérées correctement
+
+2. **Fonctionnalité de l'application** :
+   - Vérifier que la navbar s'affiche correctement
+   - Vérifier que les menus sont filtrés selon le rôle de l'utilisateur
+   - Vérifier que tous les liens de menu fonctionnent
+
+3. **Compatibilité** :
+   - Tester avec différents rôles d'utilisateurs
+   - Vérifier que les menus appropriés sont affichés/masqués
+
+## RECOMMANDATIONS
+
+1. **Exécuter le script SQL** :
+   - Utiliser phpMyAdmin ou la ligne de commande MySQL pour exécuter le script
+   - Vérifier que la base de données cible est `id_antique`
+
+2. **Sauvegarde** :
+   - Faire une sauvegarde de la base avant d'exécuter le script
+
+3. **Validation** :
+   - Après exécution, vérifier que l'erreur "Table 'id_antique.tb_menus' doesn't exist" ne se produit plus

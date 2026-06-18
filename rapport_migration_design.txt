@@ -1,0 +1,141 @@
+# RAPPORT DE MIGRATION DE DESIGN
+## Projet : archive-test
+## Date : 08/06/2026
+
+---
+
+## ANALYSE DES DIFFÉRENCES
+
+### Structure des projets
+- **archive** : Projet source avec le design de référence
+- **archive-test** : Projet cible devant adopter le même design
+
+### Fichiers d'interface identifiés
+#### Dans archive (source)
+- application/views/header.php
+- application/views/footer.php
+- assets/css/archive.css
+- assets/js/archive.js
+- assets/pics/ (dossier d'images)
+
+#### Dans archive-test (cible)
+- application/views/header.php
+- application/views/footer.php
+- assets/css/archive.css
+- assets/js/archive.js
+- assets/pics/ (dossier d'images)
+
+---
+
+## PLAN DE COPIE
+
+### Fichiers copiés
+1. application/views/header.php
+2. application/views/footer.php
+3. assets/css/archive.css
+4. assets/js/archive.js
+5. assets/pics/ (toutes les images)
+
+### Fichiers sauvegardés
+1. archive-test/backups/views/header_backup.php
+2. archive-test/backups/views/footer_backup.php
+3. archive-test/backups/assets/css/archive_backup.css
+4. archive-test/backups/assets/js/archive_backup.js
+5. archive-test/backups/assets/pics/ (toutes les images)
+
+---
+
+## FICHIERS MODIFIÉS
+
+### header.php
+- **Modifications apportées** :
+  - Ajout des métadonnées CSRF pour la sécurité
+  - Intégration du menu avec gestion des rôles et grades
+  - Ajout du dropdown de profil utilisateur
+  - Conservation des fonctionnalités spécifiques à archive-test (modal de profil, gestion des tokens CSRF)
+  - Adaptation des chemins d'accès aux ressources (CSS, JS, images)
+
+### footer.php
+- **Modifications apportées** :
+  - Conservation de la structure de base
+  - Maintien des scripts JavaScript spécifiques (gestion du personnel, modals)
+  - Adaptation des chemins d'accès aux ressources
+
+### archive.css
+- **Modifications apportées** :
+  - Copie directe du fichier de style depuis archive
+  - Aucun changement structurel nécessaire
+
+### archive.js
+- **Modifications apportées** :
+  - Copie directe du fichier de script depuis archive
+  - Aucun changement structurel nécessaire
+
+---
+
+## CORRECTIONS EFFECTUÉES
+
+1. **Gestion des tokens CSRF** :
+   - Ajout des balises meta pour les tokens CSRF dans le header
+   - Intégration du script JavaScript pour la gestion automatique des tokens dans les formulaires et requêtes AJAX
+
+2. **Menu dynamique** :
+   - Intégration de la logique de affichage conditionnel basée sur les rôles et grades des utilisateurs
+   - Conservation des liens spécifiques à archive-test
+
+3. **Profil utilisateur** :
+   - Ajout du dropdown de profil avec le nom d'utilisateur et son grade
+   - Intégration du modal de profil existant
+
+4. **Chemins des ressources** :
+   - Vérification et correction des chemins vers les fichiers CSS, JS et images
+   - Utilisation de `base_url()` pour garantir la compatibilité
+
+---
+
+## TESTS À EFFECTUER
+
+### Pages à vérifier
+1. Page d'accueil (archive/archive)
+2. Pré-archives (archive/prearchive) - si rôle autorisé
+3. Archives finales (archive/archive_final)
+4. Personnels sortants (archive/personnel) - si rôle autorisé
+5. Tableau de bord admin (archive/dashboard) - si rôle admin
+6. Pages d'administration (consultations, journal, utilisateurs) - si rôle admin
+
+### Fonctionnalités à tester
+1. Connexion/Déconnexion
+2. Navigation entre les différentes sections
+3. Affichage conditionnel des menus selon les rôles
+4. Modal de profil utilisateur
+5. Fonctionnalités spécifiques (recherche, validation de documents)
+6. Responsivité sur différents appareils
+
+---
+
+## RÉSULTAT ATTENDU
+
+Le projet **archive-test** devrait maintenant afficher :
+- Le même design visuel que le projet **archive** (couleurs, mise en page, typographie)
+- La même structure de navigation (menu, header, footer)
+- Les mêmes interactions utilisateur (modals, dropdowns)
+- Toutes les fonctionnalités spécifiques à archive-test préservées
+- Une expérience utilisateur cohérente entre les deux projets
+
+---
+
+## RECOMMANDATIONS
+
+1. **Vérification complète** :
+   - Tester toutes les pages et fonctionnalités pour s'assurer qu'aucun régression n'a été introduite
+
+2. **Optimisations possibles** :
+   - Minification des fichiers CSS/JS pour améliorer les performances
+   - Vérification des images pour optimiser leur taille/taille de fichier
+
+3. **Maintenance** :
+   - Documenter les changements apportés pour les futures mises à jour
+   - Conserver les sauvegardes des fichiers originaux pour référence
+
+---
+Fin du rapport

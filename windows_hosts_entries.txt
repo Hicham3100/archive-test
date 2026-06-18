@@ -1,0 +1,9 @@
+# Entrees a ajouter au fichier hosts de Windows pour les projets archive et archive-test
+# Chemin du fichier : C:\Windows\System32\drivers\etc\hosts
+# Ouvrir avec Notepad en tant qu'administrateur
+
+# Projets WampServer - CodeIgniter 3
+127.0.0.1       archive.local
+127.0.0.1       archive-test.local
+
+# Fin des entrees pour les projets

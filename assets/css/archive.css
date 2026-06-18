@@ -1,0 +1,168 @@
+/* Body fond gris très clair */
+body {
+    background-color: #f8f9fa;
+    color: #212529; /* texte sombre */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    min-height: 100vh;
+}
+
+/* Styles du contenu */
+h1, p {
+    color: #212529;
+}
+
+/* Layout global pour footer en bas */
+.page-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Le contenu prend tout l'espace disponible */
+.page-content {
+    flex: 1;
+}
+
+/* Conteneurs responsives */
+.container-content {
+    max-width: 900px;
+    background-color: rgba(255, 255, 255, 0.95); /* presque opaque */
+    padding: 30px;
+    border-radius: 12px;
+    margin-top: 50px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+/* Désactiver les effets navbar pour l'icône profil */
+.navbar-nav .profile-link {
+    padding: 0 !important;
+}
+
+.navbar-nav .profile-link::after {
+    display: none !important;
+}
+
+.navbar-nav .profile-link:hover {
+    color: inherit !important;
+}
+
+.name {
+    color: #3b7ca1; /* bleu foncé dans le même thème */
+    font-weight: bold;
+    display: inline-block; /* nécessaire si on utilise transform */
+    transform: skewX(-10deg); /* inclinaison légère à gauche */
+}
+
+.archive-card {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    background-color: #ffffff;
+}
+
+.archive-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+/* Titres avec couleurs différentes */
+.card-header {
+    padding: 15px;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.bg-blue {
+    background-color: #1a73e8;
+}
+
+.bg-green {
+    background-color: #28a745;
+}
+
+.bg-orange {
+    background-color: #fd7e14;
+}
+
+.bg-petrol {
+    background-color: #1f4f5f;
+}
+
+.bg-slate {
+    background-color: #4b5563;
+}
+
+.card-body {
+    padding: 15px;
+    color: #212529;
+}
+
+/* Navbar bleu foncé → bleu clair */
+.navbar-gradient {
+    background: linear-gradient(to right, #1a3b5d, #3b7ca1);
+}
+
+/* Effet simple au survol pour les liens de la navbar */
+.navbar-nav .nav-link {
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.navbar-nav .nav-link::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 2px;
+    background: #2eb82e; /* vert foncé pour le soulignement */
+    transition: width 0.3s;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.navbar-nav .nav-link:hover::after {
+    width: 100%;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #b3ffb3; /* léger vert clair au survol */
+}
+
+/* État actif du menu */
+.navbar-nav .nav-link.active {
+    color: #b3ffb3; /* même couleur que hover */
+}
+
+.navbar-nav .nav-link.active::after {
+    width: 100%;
+}
+
+/* Footer */
+.archive-footer {
+    margin-top: 60px;
+    padding-bottom: 20px;
+    color: #5f6f73; /* gris doux */
+    font-size: 0.9rem;
+}
+
+.archive-footer hr {
+    border: 0;
+    height: 1px;
+    background: linear-gradient(
+        to right,
+        transparent,
+        rgba(0, 102, 153, 0.6),
+        rgba(0, 128, 96, 0.6),
+        transparent
+    );
+    margin-bottom: 15px;
+}
+
+.archive-footer p {
+    letter-spacing: 0.5px;
+}
