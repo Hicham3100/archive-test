@@ -119,7 +119,7 @@ class Archive extends MY_Controller {
 
     public function add_users() {
         $this->_check_login();
-        if ($this->session->userdata('role') != 1) redirect('archive/archive');
+        $this->_require_permission_redirect('users', 'ajouter', 'archive/users');
         if ($this->input->server('REQUEST_METHOD') !== 'POST') show_error('Méthode non autorisée', 405);
         $lname     = trim($this->input->post('lname', true));
         $fname     = trim($this->input->post('fname', true));
@@ -152,6 +152,7 @@ class Archive extends MY_Controller {
 
     public function delete_user($username) {
         $this->_check_login();
+        $this->_require_permission_redirect('users', 'supprimer', 'archive/users');
         if ($this->session->userdata('role') != 1) redirect('archive/users');
         if ($username == $this->session->userdata('username')) {
             $this->session->set_flashdata('error', 'Vous ne pouvez pas supprimer votre propre compte.');
@@ -168,6 +169,7 @@ class Archive extends MY_Controller {
 
     public function toggle_user_status($username) {
         $this->_check_login();
+        $this->_require_permission_redirect('users', 'modifier', 'archive/users');
         if ($this->session->userdata('role') != 1) redirect('archive/users');
         if ($username == $this->session->userdata('username')) {
             $this->session->set_flashdata('error', 'Vous ne pouvez pas modifier votre propre statut.');
@@ -238,6 +240,7 @@ class Archive extends MY_Controller {
 
     public function edit_user() {
         $this->_check_login();
+        $this->_require_permission_redirect('users', 'modifier', 'archive/archive');
         if ($this->session->userdata('role') != 1) redirect('archive/archive');
         if ($this->input->method() !== 'post') show_error('Méthode non autorisée', 405);
         $original_username = $this->input->post('original_username', true);
@@ -302,6 +305,7 @@ class Archive extends MY_Controller {
     // ========== DOCUMENTS ==========
     public function save_document() {
         $this->_check_login();
+        $this->_require_permission_redirect('prearchives', 'ajouter', 'archive/archive');
         if (!$this->_can_register()) {
             $this->session->set_flashdata('error', 'Vous n\'avez pas les droits.');
             redirect('archive/archive');
@@ -405,6 +409,7 @@ class Archive extends MY_Controller {
 
     public function validate_document() {
         $this->_check_login();
+        $this->_require_permission('prearchives', 'modifier');
         if (!$this->_can_validate()) { echo json_encode(['status' => false]); return; }
         $document_id = $this->input->post('document_id');
         $numero_boite = $this->input->post('numero_boite');
@@ -774,7 +779,7 @@ class Archive extends MY_Controller {
 
     public function ajouter_personnel() {
         $this->_check_login();
-        $this->_check_personnel_access(); // SEC-05 — Contrôle d'accès manquant ajouté
+        $this->_require_permission('personnel', 'ajouter');
         if ($this->input->method() !== 'post') show_error('Méthode non autorisée', 405);
         $this->load->library('form_validation');
         $this->form_validation->set_rules('nom', 'Nom', 'required');
@@ -830,6 +835,7 @@ class Archive extends MY_Controller {
 
     public function supprimer_personnel($id) {
         $this->_check_login();
+        $this->_require_permission_redirect('personnel', 'supprimer', 'archive/personnel');
         if ($this->session->userdata('role') != 1) redirect('archive/personnel');
         $this->Archive_model->move_to_trash('tb_personnel_sortant', $id, $this->session->userdata('username'));
         $this->Archive_model->log_activity($this->session->userdata('username'), 'Suppression personnel (corbeille)', 'ID: ' . $id);
@@ -845,6 +851,8 @@ class Archive extends MY_Controller {
 
     public function modifier_personnel() {
         $this->_check_login();
+        $this->_require_permission_redirect('personnel', 'modifier', 'archive/personnel');
+        if ($this->session->userdata('role') != 1) redirect('archive/personnel');
         if ($this->input->method() !== 'post') show_error('Méthode non autorisée', 405);
         $id = $this->input->post('id', TRUE);
         $this->load->library('form_validation');

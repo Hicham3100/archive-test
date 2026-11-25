@@ -49,10 +49,7 @@ class Documents extends MY_Controller {
     /** Affiche la liste des pré-archives selon les droits de l'utilisateur */
     public function prearchive() {
         $this->_check_login();
-        if (!$this->_can_see_prearchive()) {
-            $this->session->set_flashdata('error', 'Accès réservé aux Gestionnaires et Administrateurs.');
-            redirect('documents/archive_final');
-        }
+        $this->_require_permission('prearchives', 'consulter');
         $structures = $this->_get_current_user_structures();
         $data = array_merge($this->data, [
             'user'      => $this->session->userdata(),
@@ -66,7 +63,7 @@ class Documents extends MY_Controller {
     /** Enregistre un nouveau document en pré-archive */
     public function save_document() {
         $this->_check_login();
-        $this->_require_write_access(); // GRADES-01 : 403 si Utilisateur
+        $this->_require_permission('prearchives', 'ajouter');
         $this->form_validation->set_rules('numero_boite', 'Numéro de boîte', 'required');
         $this->form_validation->set_rules('emetteur', 'Émetteur', 'required');
         $this->form_validation->set_rules('destinataire', 'Destinataire', 'required');

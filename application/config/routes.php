@@ -88,6 +88,35 @@ $route['users/get_details/(:any)']          = 'users/get_details/$1';
 $route['users/edit']                        = 'users/edit';
 $route['users/update_profile']              = 'users/update_profile';
 
+// MODULE A — Rôles et permissions granulaires
+$route['rbac']                  = 'rbac/index';
+$route['rbac/index']            = 'rbac/index';
+$route['rbac/assign']           = 'rbac/assign';
+$route['rbac/revoke']           = 'rbac/revoke';
+$route['rbac/permissions']      = 'rbac/permissions';
+$route['rbac/create_role']      = 'rbac/create_role';
+$route['rbac/update_role']      = 'rbac/update_role';
+$route['rbac/delete_role']      = 'rbac/delete_role';
+
+// MODULE B — Plan de classement hiérarchique
+$route['classification']                 = 'classification/index';
+$route['classification/index']           = 'classification/index';
+$route['classification/create_node']     = 'classification/create_node';
+$route['classification/update_node']     = 'classification/update_node';
+$route['classification/move_node']       = 'classification/move_node';
+$route['classification/delete_node']     = 'classification/delete_node';
+$route['classification/export_json']     = 'classification/export_json';
+$route['classification/import_json']     = 'classification/import_json';
+
+// MODULE C — Archives physiques
+$route['physical']                  = 'physical/index';
+$route['physical/index']            = 'physical/index';
+$route['physical/create_location']  = 'physical/create_location';
+$route['physical/create_box']       = 'physical/create_box';
+$route['physical/move_box']         = 'physical/move_box';
+$route['physical/delete_box']       = 'physical/delete_box';
+$route['physical/labels_pdf']       = 'physical/labels_pdf';
+
 // Aliases de compatibilité
 $route['archive/users']                     = 'users/index';
 $route['archive/add_users']                 = 'users/add';
@@ -149,3 +178,82 @@ $route['archive/supprimer_personnel/(:num)']= 'personnel/supprimer/$1';
 $route['archive/modifier_personnel']        = 'personnel/modifier';
 $route['archive/get_personnel_details/(:num)'] = 'personnel/get_details/$1';
 $route['archive/search_personnel_ajax']     = 'personnel/search_ajax';
+
+// ============================================================
+// MODULE D — Bibliothèque numérique
+// ============================================================
+$route['digital']                    = 'digital/index';
+$route['digital/index']              = 'digital/index';
+$route['digital/upload']             = 'digital/upload';
+$route['digital/move_copy']          = 'digital/move_copy';
+$route['digital/preview/(:any)']     = 'digital/preview/$1';
+$route['digital/download/(:any)']    = 'digital/download/$1';
+$route['digital/download_version/(:num)'] = 'digital/download_version/$1';
+
+// MODULE E — Liaisons physique ↔ numérique
+$route['relationships/physical/(:num)'] = 'relationships/physical/$1';
+$route['relationships/digital/(:num)']  = 'relationships/digital/$1';
+$route['relationships/link']            = 'relationships/link';
+$route['relationships/unlink']          = 'relationships/unlink';
+
+// MODULE F — Métadonnées dynamiques
+$route['metadata']                 = 'metadata/index';
+$route['metadata/index']           = 'metadata/index';
+$route['metadata/create']          = 'metadata/create';
+$route['metadata/update']          = 'metadata/update';
+$route['metadata/delete']          = 'metadata/delete';
+$route['metadata/restore']         = 'metadata/restore';
+
+// MODULE H — Versements
+$route['deposits']                          = 'deposits/index';
+$route['deposits/index']                    = 'deposits/index';
+$route['deposits/create']                   = 'deposits/create';
+$route['deposits/detail/(:num)']            = 'deposits/detail/$1';
+$route['deposits/add_item']                 = 'deposits/add_item';
+$route['deposits/submit']                   = 'deposits/submit';
+$route['deposits/validate_deposit']         = 'deposits/validate_deposit';
+$route['deposits/reject']                   = 'deposits/reject';
+$route['deposits/reactivate']               = 'deposits/reactivate';
+$route['deposits/assign_cotes']             = 'deposits/assign_cotes';
+$route['deposits/integrate']                = 'deposits/integrate';
+$route['deposits/bordereau/(:num)']         = 'deposits/bordereau/$1';
+
+// MODULE I — Conservation et cycle de vie
+$route['retention']                         = 'retention/index';
+$route['retention/index']                   = 'retention/index';
+$route['retention/create_item']             = 'retention/create_item';
+$route['retention/suspend']                 = 'retention/suspend';
+$route['retention/release']                 = 'retention/release';
+$route['retention/request_transfer']        = 'retention/request_transfer';
+$route['retention/validate_transfer']       = 'retention/validate_transfer';
+$route['retention/request_elimination']     = 'retention/request_elimination';
+$route['retention/confirm_elimination']     = 'retention/confirm_elimination';
+
+// MODULE J — Élimination / transferts définitifs
+$route['disposal']                         = 'disposal/index';
+$route['disposal/index']                   = 'disposal/index';
+$route['disposal/create']                  = 'disposal/create';
+$route['disposal/detail/(:num)']           = 'disposal/detail/$1';
+$route['disposal/submit']                  = 'disposal/submit';
+$route['disposal/validate_level1']         = 'disposal/validate_level1';
+$route['disposal/validate_level2']         = 'disposal/validate_level2';
+$route['disposal/register_backup']         = 'disposal/register_backup';
+$route['disposal/logical_delete']          = 'disposal/logical_delete';
+$route['disposal/restore']                 = 'disposal/restore';
+$route['disposal/request_definitive']      = 'disposal/request_definitive';
+$route['disposal/confirm_definitive']      = 'disposal/confirm_definitive';
+
+// MODULE K — Prêts et consultations physiques
+$route['loans']                         = 'loans/index';
+$route['loans/index']                   = 'loans/index';
+$route['loans/create_request']          = 'loans/create_request';
+$route['loans/validate_request']        = 'loans/validate_request';
+$route['loans/exit_loan']               = 'loans/exit_loan';
+$route['loans/prolong']                 = 'loans/prolong';
+$route['loans/return_loan']             = 'loans/return_loan';
+
+// MODULE L — Recherche avancée
+$route['global_search']           = 'global_search/index';
+$route['global_search/index']     = 'global_search/index';
+$route['global_search/save']      = 'global_search/save';
+$route['global_search/cleanup']   = 'global_search/cleanup';

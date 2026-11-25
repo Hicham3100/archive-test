@@ -225,4 +225,65 @@ class MY_Controller extends CI_Controller {
         fclose($out);
         exit;
     }
+
+    // =========================================================
+    // PERMISSIONS RBAC
+    // =========================================================
+
+    /**
+     * Vérifie si l'utilisateur a la permission d'effectuer une action donnée sur un module.
+     *
+     * @param string $module  Le module
+     * @param string $action  L'action (ex: 'ajouter', 'modifier', 'supprimer', 'consulter', 'telecharger')
+     * @param string|null $service  Service optionnel (pour les permissions spécifiques à un service)
+     * @param string|null $fund  Fond optionnel (pour les permissions spécifiques à un fond)
+     * @return bool          Vrai si l'utilisateur a la permission
+     */
+    protected function _has_permission($module, $action, $service = null, $fund = null) {
+        $this->load->model('Rbac_model');
+        $user_id = (int) $this->session->userdata('user_id');
+        if ($user_id <= 0) return false;
+
+        if ($this->Rbac_model->has_permission($user_id, $module, $action, $service, $fund)) {
+            return true;
+        }
+
+        // Compatibilité temporaire pendant la migration : anciens rôles uniquement.
+        if ((int) $this->session->userdata('role') === 1) {
+            return in_array($action, ['consulter','ajouter','modifier','supprimer','telecharger'], true);
+        }
+        return false;
+    }
+
+    /**
+     * Vérifie et impose la permission pour une action donnée sur un module.
+     * Arrête l'exécution avec une erreur 403 si la permission est manquante.
+     *
+     * @param string $module  Le module
+     * @param string $action  L'action
+     * @param string|null $service  Service optionnel
+     * @param string|null $fund  Fond optionnel
+     */
+    protected function _require_permission($module, $action, $service = null, $fund = null) {
+        if (!$this->_has_permission($module, $action, $service, $fund)) {
+            show_error('Accès refusé pour cette action.', 403);
+        }
+    }
+
+    /**
+     * Vérifie et impose la permission pour une action donnée sur un module.
+     * Redirige avec un message flash en cas de permission manquante.
+     *
+     * @param string $module  Le module
+     * @param string $action  L'action
+     * @param string $redirect_to  Route de redirection
+     * @param string|null $service  Service optionnel
+     * @param string|null $fund  Fond optionnel
+     */
+    protected function _require_permission_redirect($module, $action, $redirect_to, $service = null, $fund = null) {
+        if (!$this->_has_permission($module, $action, $service, $fund)) {
+            $this->session->set_flashdata('error', 'Accès refusé pour cette action.');
+            redirect($redirect_to);
+        }
+    }
 }

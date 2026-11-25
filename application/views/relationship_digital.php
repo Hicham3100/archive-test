@@ -1,0 +1,9 @@
+<div class="container-fluid py-3">
+    <h4>Fiche numérique</h4>
+    <div class="card border-0 shadow-sm mb-3"><div class="card-body"><div><strong>Titre :</strong> <?=html_escape($document['title'])?></div><div><strong>Nom :</strong> <?=html_escape($document['original_name'])?></div><div><strong>UUID :</strong> <code><?=html_escape($document['uuid'])?></code></div><div><strong>Confidentiel :</strong> <?=((int)$document['confidential']?'Oui':'Non')?></div></div></div>
+
+    <?php if($can_physical):?><div class="card border-0 shadow-sm"><div class="card-header bg-white fw-semibold">Emplacements physiques liés</div><div class="table-responsive"><table class="table table-sm mb-0"><thead><tr><th>Cote</th><th>Boîte</th><th>Localisation</th><th>Relation</th><th>Action</th></tr></thead><tbody>
+    <?php if(empty($relations)):?><tr><td colspan="5" class="text-center text-muted">Aucune liaison physique.</td></tr><?php endif;?>
+    <?php foreach($relations as $relation):?><tr><td><?=html_escape($relation['cote'])?></td><td><?=html_escape($relation['box_title'])?></td><td><?=html_escape(trim(($relation['location_code']??'').' '.($relation['location_label']??'')))?></td><td><?=html_escape($relation['type_relation'])?></td><td><form method="post" action="<?=site_url('relationships/unlink')?>"><input type="hidden" name="<?=$this->security->get_csrf_token_name()?>" value="<?=$this->security->get_csrf_hash()?>"><input type="hidden" name="relationship_id" value="<?= (int)$relation['id'] ?>"><input type="hidden" name="reason" value="Déliaison depuis fiche numérique"><button type="submit" class="btn btn-sm btn-outline-danger">Délier</button></form></td></tr><?php endforeach;?>
+    </tbody></table></div></div><?php else:?><div class="alert alert-warning">Les informations physiques sont masquées pour ce profil.</div><?php endif;?>
+</div>

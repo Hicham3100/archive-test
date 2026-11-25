@@ -59,13 +59,39 @@ if (!function_exists('build_navigation_menus')) {
                 'submenus' => [
                     ['title' => 'Tableau de bord',     'url' => 'admin/dashboard',    'icone' => 'bi bi-speedometer2'],
                     ['title' => 'Utilisateurs',         'url' => 'users/index',        'icone' => 'bi bi-people'],
+                    ['title' => 'Rôles et permissions', 'url' => 'rbac/index',        'icone' => 'bi bi-shield-lock'],
+                    ['title' => 'Plan de classement',   'url' => 'classification/index','icone' => 'bi bi-diagram-3'],
+                    ['title' => 'Archives physiques',   'url' => 'physical/index','icone' => 'bi bi-box-seam'],
                     ['title' => "Journal d'activité",   'url' => 'admin/activity_log', 'icone' => 'bi bi-journal-text'],
                     ['title' => 'Consultations',        'url' => 'admin/consultations','icone' => 'bi bi-eye'],
                     ['title' => 'Connexions',           'url' => 'admin/login_history','icone' => 'bi bi-key'],
                     ['title' => 'Corbeille',            'url' => 'admin/trash',        'icone' => 'bi bi-trash'],
+                    ['title' => 'Archives numériques', 'url' => 'digital/index','icone' => 'bi bi-file-earmark-pdf'],
+                    ['title' => 'Métadonnées dynamiques', 'url' => 'metadata/index','icone' => 'bi bi-sliders'],
+                    ['title' => 'Versements', 'url' => 'deposits/index','icone' => 'bi bi-box-arrow-in-down'],
+                    ['title' => 'Conservation & cycle', 'url' => 'retention/index','icone' => 'bi bi-calendar2-check'],
+                    ['title' => 'Élimination / transferts', 'url' => 'disposal/index','icone' => 'bi bi-trash3'],
                 ],
             ];
         }
+
+        // ---- Prêts physiques : Admin + Gestionnaire ----
+        if ($is_admin || $is_gestionnaire) {
+            $menus[] = [
+                'title'  => 'Prêts & consultations',
+                'url'    => 'loans/index',
+                'icone'  => 'bi bi-box-arrow-right',
+                'ordre'  => 6,
+            ];
+        }
+
+        // ---- Recherche avancée : Tous les utilisateurs ----
+        $menus[] = [
+            'title'  => 'Recherche avancée',
+            'url'    => 'global_search/index',
+            'icone'  => 'bi bi-search',
+            'ordre'  => 7,
+        ];
 
         usort($menus, function ($a, $b) {
             return ($a['ordre'] ?? 99) <=> ($b['ordre'] ?? 99);

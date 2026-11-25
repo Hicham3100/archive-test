@@ -1,0 +1,8 @@
+<div class="container-fluid py-3">
+    <h4>Fiche physique</h4>
+    <div class="card border-0 shadow-sm mb-3"><div class="card-body"><div><strong>Cote :</strong> <?=html_escape($box['cote']??'—')?></div><div><strong>Intitulé :</strong> <?=html_escape($box['title']??'—')?></div><div><strong>Localisation :</strong> <?=html_escape(($location['code']??'').' '.($location['label']??''))?></div></div></div>
+    <div class="card border-0 shadow-sm"><div class="card-header bg-white fw-semibold">Documents numériques liés</div><div class="table-responsive"><table class="table table-sm mb-0"><thead><tr><th>Titre</th><th>Type relation</th><th>Confidentiel</th><th>Actions</th></tr></thead><tbody>
+    <?php if(empty($relations)):?><tr><td colspan="4" class="text-center text-muted">Aucune liaison.</td></tr><?php endif;?>
+    <?php foreach($relations as $relation):?><tr><td><?=html_escape($relation['title'])?></td><td><?=html_escape($relation['type_relation'])?></td><td><?=((int)$relation['confidential']?'Oui':'Non')?></td><td><a class="btn btn-sm btn-outline-primary" href="<?=site_url('relationships/digital/'.$relation['digital_document_id'])?>">Fiche</a><form method="post" action="<?=site_url('relationships/unlink')?>" class="d-inline"><input type="hidden" name="<?=$this->security->get_csrf_token_name()?>" value="<?=$this->security->get_csrf_hash()?>"><input type="hidden" name="relationship_id" value="<?= (int)$relation['id'] ?>"><input type="hidden" name="reason" value="Déliaison depuis fiche physique"><button type="submit" class="btn btn-sm btn-outline-danger">Délier</button></form></td></tr><?php endforeach;?>
+    </tbody></table></div></div>
+</div>

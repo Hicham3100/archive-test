@@ -59,6 +59,7 @@ class Users extends MY_Controller {
     public function add() {
         $this->_check_login();
         $this->_require_admin_redirect('users/index');
+        $this->_require_permission('users', 'ajouter');
         if ($this->input->server('REQUEST_METHOD') !== 'POST') show_error('Méthode non autorisée', 405);
 
         $lname    = trim($this->input->post('lname', true));
@@ -102,7 +103,7 @@ class Users extends MY_Controller {
     /** Supprime (corbeille) un utilisateur (admin uniquement) */
     public function delete($username) {
         $this->_check_login();
-        $this->_require_admin_redirect('users/index');
+        $this->_require_permission_redirect('users', 'supprimer', 'users/index');
         if ($username == $this->session->userdata('username')) {
             $this->session->set_flashdata('error', 'Vous ne pouvez pas supprimer votre propre compte.');
             redirect('users/index');
@@ -119,7 +120,7 @@ class Users extends MY_Controller {
     /** Active ou désactive un compte utilisateur (admin uniquement) */
     public function toggle_status($username) {
         $this->_check_login();
-        $this->_require_admin_redirect('users/index');
+        $this->_require_permission_redirect('users', 'modifier', 'users/index');
         if ($username == $this->session->userdata('username')) {
             $this->session->set_flashdata('error', 'Vous ne pouvez pas modifier votre propre statut.');
             redirect('users/index');
@@ -157,7 +158,7 @@ class Users extends MY_Controller {
     /** Modifie un utilisateur existant (POST, admin uniquement) */
     public function edit() {
         $this->_check_login();
-        $this->_require_admin_redirect('users/index');
+        $this->_require_permission_redirect('users', 'modifier', 'users/index');
         if ($this->input->method() !== 'post') show_error('Méthode non autorisée', 405);
 
         $original_username = $this->input->post('original_username', true);

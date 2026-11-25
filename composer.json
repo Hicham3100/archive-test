@@ -12,7 +12,8 @@
 	},
 	"require": {
 		"php": ">=5.3.7",
-		"dompdf/dompdf": "*"
+		"dompdf/dompdf": "*",
+		"endroid/qr-code": "^4.8"
 	},
 	"suggest": {
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"
@@ -26,7 +27,7 @@
 			"sed -i s/name{0}/name[0]/ vendor/mikey179/vfsstream/src/main/php/org/bovigo/vfs/vfsStream.php"
 		],
 		"post-update-cmd": [
-			"sed -i s/name{0}/name[0]/ vendor/mikey179/vfsstream/src/main/php/org/bovigo/vfs/vfsStream.php"
+			"@php -r \"echo 'Composer update completed on Windows.\\n';\""
 		]
 	},
 	"require-dev": {
